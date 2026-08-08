@@ -1,0 +1,726 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Heart Disease Prediction | Mahi Shahriar</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Header */
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .header p {
+            margin-top: 10px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .author {
+            font-weight: bold;
+        }
+
+
+        /* Section */
+
+        .section-title {
+            margin-top: 25px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+
+        /* Form */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group small {
+            margin-top: 5px;
+            color: #777;
+            font-size: 12px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+
+        /* Button */
+
+        .button-container {
+            margin-top: 30px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* Result */
+
+        .result {
+            margin-top: 35px;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            background: #eef2ff;
+        }
+
+        .result h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .prediction {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .probability {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+
+        /* Disclaimer */
+
+        .disclaimer {
+            margin-top: 30px;
+            padding: 18px;
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            border-radius: 8px;
+            color: #9a3412;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+
+        /* Footer */
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 700px) {
+
+            .container {
+                width: 95%;
+                padding: 25px;
+                margin: 20px auto;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- Header -->
+
+    <div class="header">
+
+        <h1>
+            Heart Disease Prediction
+        </h1>
+
+        <p>
+            Machine Learning Project by
+            <span class="author">
+                Mahi Shahriar
+            </span>
+        </p>
+
+    </div>
+
+
+    <!-- Patient Information -->
+
+    <div class="section-title">
+
+        <h2>
+            Patient Information
+        </h2>
+
+    </div>
+
+
+    <form method="POST">
+
+
+        <div class="form-grid">
+
+
+            <!-- Age -->
+
+            <div class="form-group">
+
+                <label for="age">
+                    Age
+                </label>
+
+                <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    min="1"
+                    max="120"
+                    step="1"
+                    placeholder="Enter age"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Sex -->
+
+            <div class="form-group">
+
+                <label for="sex">
+                    Sex
+                </label>
+
+                <select
+                    id="sex"
+                    name="sex"
+                    required
+                >
+
+                    <option value="">
+                        Select sex
+                    </option>
+
+                    <option value="0">
+                        Female
+                    </option>
+
+                    <option value="1">
+                        Male
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Chest Pain -->
+
+            <div class="form-group">
+
+                <label for="cp">
+                    Chest Pain Type
+                </label>
+
+                <select
+                    id="cp"
+                    name="cp"
+                    required
+                >
+
+                    <option value="">
+                        Select chest pain type
+                    </option>
+
+                    <option value="0">
+                        0 - Typical Angina
+                    </option>
+
+                    <option value="1">
+                        1 - Atypical Angina
+                    </option>
+
+                    <option value="2">
+                        2 - Non-anginal Pain
+                    </option>
+
+                    <option value="3">
+                        3 - Asymptomatic
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Resting Blood Pressure -->
+
+            <div class="form-group">
+
+                <label for="trestbps">
+                    Resting Blood Pressure
+                </label>
+
+                <input
+                    type="number"
+                    id="trestbps"
+                    name="trestbps"
+                    min="50"
+                    max="250"
+                    step="0.1"
+                    placeholder="mm Hg"
+                    required
+                >
+
+                <small>
+                    Measured in mm Hg
+                </small>
+
+            </div>
+
+
+            <!-- Cholesterol -->
+
+            <div class="form-group">
+
+                <label for="chol">
+                    Serum Cholesterol
+                </label>
+
+                <input
+                    type="number"
+                    id="chol"
+                    name="chol"
+                    min="50"
+                    max="700"
+                    step="0.1"
+                    placeholder="mg/dl"
+                    required
+                >
+
+                <small>
+                    Measured in mg/dl
+                </small>
+
+            </div>
+
+
+            <!-- Resting ECG -->
+
+            <div class="form-group">
+
+                <label for="restecg">
+                    Resting ECG Result
+                </label>
+
+                <select
+                    id="restecg"
+                    name="restecg"
+                    required
+                >
+
+                    <option value="">
+                        Select ECG result
+                    </option>
+
+                    <option value="0">
+                        0 - Normal
+                    </option>
+
+                    <option value="1">
+                        1 - ST-T Wave Abnormality
+                    </option>
+
+                    <option value="2">
+                        2 - Left Ventricular Hypertrophy
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Maximum Heart Rate -->
+
+            <div class="form-group">
+
+                <label for="thalach">
+                    Maximum Heart Rate Achieved
+                </label>
+
+                <input
+                    type="number"
+                    id="thalach"
+                    name="thalach"
+                    min="50"
+                    max="250"
+                    step="0.1"
+                    placeholder="Enter heart rate"
+                    required
+                >
+
+                <small>
+                    Maximum heart rate achieved during exercise
+                </small>
+
+            </div>
+
+
+            <!-- Exercise Induced Angina -->
+
+            <div class="form-group">
+
+                <label for="exang">
+                    Exercise-Induced Angina
+                </label>
+
+                <select
+                    id="exang"
+                    name="exang"
+                    required
+                >
+
+                    <option value="">
+                        Select option
+                    </option>
+
+                    <option value="0">
+                        0 - No
+                    </option>
+
+                    <option value="1">
+                        1 - Yes
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Oldpeak -->
+
+            <div class="form-group">
+
+                <label for="oldpeak">
+                    ST Depression (Oldpeak)
+                </label>
+
+                <input
+                    type="number"
+                    id="oldpeak"
+                    name="oldpeak"
+                    min="0"
+                    max="10"
+                    step="0.1"
+                    placeholder="Enter oldpeak value"
+                    required
+                >
+
+                <small>
+                    ST depression induced by exercise
+                </small>
+
+            </div>
+
+
+            <!-- Slope -->
+
+            <div class="form-group">
+
+                <label for="slope">
+                    ST Segment Slope
+                </label>
+
+                <select
+                    id="slope"
+                    name="slope"
+                    required
+                >
+
+                    <option value="">
+                        Select slope
+                    </option>
+
+                    <option value="0">
+                        0 - Upsloping
+                    </option>
+
+                    <option value="1">
+                        1 - Flat
+                    </option>
+
+                    <option value="2">
+                        2 - Downsloping
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Major Vessels -->
+
+            <div class="form-group">
+
+                <label for="ca">
+                    Number of Major Vessels
+                </label>
+
+                <select
+                    id="ca"
+                    name="ca"
+                    required
+                >
+
+                    <option value="">
+                        Select number
+                    </option>
+
+                    <option value="0">
+                        0
+                    </option>
+
+                    <option value="1">
+                        1
+                    </option>
+
+                    <option value="2">
+                        2
+                    </option>
+
+                    <option value="3">
+                        3
+                    </option>
+
+                    <option value="4">
+                        4
+                    </option>
+
+                </select>
+
+                <small>
+                    Number of major vessels colored by fluoroscopy
+                </small>
+
+            </div>
+
+
+            <!-- Thalassemia -->
+
+            <div class="form-group">
+
+                <label for="thal">
+                    Thalassemia
+                </label>
+
+                <select
+                    id="thal"
+                    name="thal"
+                    required
+                >
+
+                    <option value="">
+                        Select thalassemia type
+                    </option>
+
+                    <option value="1">
+                        1 - Normal
+                    </option>
+
+                    <option value="2">
+                        2 - Fixed Defect
+                    </option>
+
+                    <option value="3">
+                        3 - Reversible Defect
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- Predict Button -->
+
+        <div class="button-container">
+
+            <button type="submit">
+                Predict Heart Disease
+            </button>
+
+        </div>
+
+
+    </form>
+
+
+    <!-- Prediction Result -->
+
+    {% if prediction %}
+
+    <div class="result">
+
+        <h2>
+            Prediction Result
+        </h2>
+
+        <div class="prediction">
+
+            {{ prediction }}
+
+        </div>
+
+
+        {% if probability is not none %}
+
+        <div class="probability">
+
+            Model probability for
+            <strong>Heart Disease</strong>:
+
+            <strong>
+                {{ "%.2f"|format(probability) }}%
+            </strong>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Disclaimer -->
+
+    <div class="disclaimer">
+
+        <strong>Important Disclaimer:</strong>
+
+        This application is an educational machine-learning
+        project created by Mahi Shahriar.
+
+        It is intended for demonstrating a machine-learning
+        workflow and is <strong>not a medical diagnostic tool</strong>.
+
+        The predictions should not be used to make medical
+        decisions. Always consult a qualified healthcare
+        professional for medical advice and diagnosis.
+
+    </div>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        Heart Disease Prediction |
+        Random Forest Machine Learning Model |
+        Mahi Shahriar
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>
+```
